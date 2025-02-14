@@ -42,7 +42,6 @@ pip install git+https://github.com/yourusername/article_models_library.git
 ├── .gitignore               # Git ignore file
 ├── README.md                # This file
 ├── requirements.txt         # Requirements
-├── pyproject.toml           # Configuration file
 └── setup.py                 # Project setup
 ```
 
