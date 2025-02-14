@@ -2,7 +2,9 @@ import pytest
 import os
 from io import BytesIO
 from pydantic import ValidationError
-from models.schemas import ArticlePDFFile, ResponseSchema, StatusEnum
+
+from models.article_nosql_models import Author
+from models.schemas import ArticlePDFFile, ResponseSchema, StatusEnum, ArticleMetadataRequest
 
 
 def load_pdf(file_path):
@@ -11,7 +13,7 @@ def load_pdf(file_path):
             return BytesIO(f.read())
     return None
 
-# Test cases
+
 test_cases_article_pdf = [
     {
         'article_pdf': {
@@ -56,7 +58,8 @@ test_cases_article_pdf = [
 ]
 
 
-@pytest.mark.parametrize('test_data', test_cases_article_pdf, ids=[case['test_description'] for case in test_cases_article_pdf])
+@pytest.mark.parametrize('test_data', test_cases_article_pdf,
+                         ids=[case['test_description'] for case in test_cases_article_pdf])
 def test_article_pdf(test_data):
     if test_data['is_valid']:
 
@@ -119,7 +122,9 @@ test_cases_response_schema = [
     }
 ]
 
-@pytest.mark.parametrize('test_data', test_cases_response_schema, ids=[case['test_description'] for case in test_cases_response_schema])
+
+@pytest.mark.parametrize('test_data', test_cases_response_schema,
+                         ids=[case['test_description'] for case in test_cases_response_schema])
 def test_response_schema(test_data):
     if test_data['is_valid']:
         response_schema = ResponseSchema(**test_data['response_data'])
@@ -128,3 +133,105 @@ def test_response_schema(test_data):
     else:
         with pytest.raises(test_data['expected_exception']):
             ResponseSchema(**test_data['response_data'])
+
+
+test_cases_article_metadata = [
+    {
+        'article_metadata': {
+            'id': '10.1000/10/123456',
+            'title': 'Example Article Title',
+            'authors': [{'name': 'John', 'surname': 'Smith'}],
+            'keywords': {'keyword1', 'keyword2'},
+            'journal': 'Example Journal',
+            'year': 2022,
+            'volume': 10,
+            'issue': 2,
+            'pages': '23-34'
+        },
+        'expected_exception': None,
+        'is_valid': True,
+        'test_description': 'Valid ArticleMetadataRequest',
+    },
+    {
+        'article_metadata': {
+            'id': '',
+            'title': 'Example Article Title',
+            'authors': [{'name': 'John', 'surname': 'Smith'}],
+            'keywords': {'keyword1', 'keyword2'},
+            'journal': 'Example Journal',
+            'year': 2022,
+            'volume': 10,
+            'issue': 2,
+            'pages': '23-34'
+        },
+        'expected_exception': ValueError,
+        'is_valid': False,
+        'test_description': 'Invalid DOI format',
+    },
+    {
+        'article_metadata': {
+            'id': '10.1000/10/123456',
+            'title': '',
+            'authors': [{'name': 'John', 'surname': 'Smith'}],
+            'keywords': {'keyword1', 'keyword2'},
+            'journal': 'Example Journal',
+            'year': 2022,
+            'volume': 10,
+            'issue': 2,
+            'pages': '23-34'
+        },
+        'expected_exception': ValueError,
+        'is_valid': False,
+        'test_description': 'Missing title in ArticleMetadataRequest',
+    },
+    {
+        'article_metadata': {
+            'id': '10.1000/10/123456',
+            'title': 'Example Article Title',
+            'authors': [{'name': 'John', 'surname': 'Smith'}],
+            'keywords': {'keyword1', 'keyword2'},
+            'journal': 'Example Journal',
+            'year': 2022,
+            'volume': 10,
+            'issue': 2,
+            'pages': ''
+        },
+        'expected_exception': ValueError,
+        'is_valid': False,
+        'test_description': 'Missing page range in ArticleMetadataRequest',
+    },
+    {
+        'article_metadata': {
+            'id': '10.1000/10/123456',
+            'title': 'Example Article Title',
+            'authors': [],
+            'keywords': {'keyword1', 'keyword2'},
+            'journal': 'Example Journal',
+            'year': 2022,
+            'volume': 10,
+            'issue': 2,
+            'pages': '23-34',
+        },
+        'expected_exception': ValueError,
+        'is_valid': False,
+        'test_description': 'Missing authors in ArticleMetadataRequest',
+    },
+]
+
+
+@pytest.mark.parametrize('test_data', test_cases_article_metadata,
+                         ids=[case['test_description'] for case in test_cases_article_metadata])
+def test_article_metadata(test_data):
+    if test_data['is_valid']:
+        article_metadata = ArticleMetadataRequest(**test_data['article_metadata'])
+        for key, value in test_data['article_metadata'].items():
+            if isinstance(value, list) and len(value) > 0 and isinstance(value[0], dict):
+                expected_value = [Author(**v) for v in value]
+            elif isinstance(value, set):
+                expected_value = set(value)
+            else:
+                expected_value = value
+            assert getattr(article_metadata, key) == expected_value
+    else:
+        with pytest.raises(test_data['expected_exception']):
+            ArticleMetadataRequest(**test_data['article_metadata'])

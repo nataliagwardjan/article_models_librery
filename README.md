@@ -25,7 +25,7 @@ pip install .
 If you want to install the library locally from a GitHub repository, you can use the following command:
 
 ```sh
-pip install git+https://github.com/yourusername/article_models_library.git
+pip install git+https://github.com/nataliagwardjan/article_models_librery
 ```
 
 ## Directory Structure

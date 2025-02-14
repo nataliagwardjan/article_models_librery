@@ -1,8 +1,7 @@
 from pydantic import BaseModel, Field, model_validator
 from typing import Optional
-from . import DOI_REGEX
+from . import DOI_REGEX, PAGES_REGEX
 
-PAGES_REGEX = r'^\d+-\d+$'
 PATH_REGEX = r'^[\w\-. /\\:]+$'
 
 
