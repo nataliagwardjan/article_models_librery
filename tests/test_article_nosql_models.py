@@ -1,5 +1,5 @@
 import pytest
-from models.article_nosql_models import ArticleText, Author, Image, Table
+from models.article_nosql_models import ArticleTextDBSchema, Author, Image, Table
 
 test_cases = [
     {
@@ -133,7 +133,7 @@ test_cases = [
 )
 def test_article_text(test_data):
     if test_data['is_valid']:
-        article = ArticleText(**test_data['article'])
+        article = ArticleTextDBSchema(**test_data['article'])
 
         for key, value in test_data['article'].items():
             if isinstance(value, list) and len(value) > 0 and isinstance(value[0], dict):
@@ -146,4 +146,4 @@ def test_article_text(test_data):
             assert getattr(article, key) == expected_value
     else:
         with pytest.raises(test_data['expected_exception']):
-            ArticleText(**test_data['article'])
+            ArticleTextDBSchema(**test_data['article'])

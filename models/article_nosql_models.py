@@ -18,7 +18,7 @@ class Table(BaseModel):
     file_path: str = Field(..., min_length=1)
 
 
-class ArticleText(BaseModel):
+class ArticleTextDBSchema(BaseModel):
     id: str = Field(..., pattern=DOI_REGEX, description='Valid DOI format')
     title: str = Field(..., min_length=1, description='Title of the article')
     authors: List[Author] = Field(..., min_length=1, description='At least one author required')

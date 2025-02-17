@@ -19,7 +19,7 @@ class ArticlePDFFile(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-class ArticleMetadataRequest(BaseModel):
+class ArticleMetadata(BaseModel):
     id: str = Field(..., pattern=DOI_REGEX, description='Valid DOI format')
     title: str = Field(..., min_length=1, description='Title of the article')
     authors: List[Author] = Field(..., min_length=1, description='At least one author required')
@@ -29,14 +29,6 @@ class ArticleMetadataRequest(BaseModel):
     volume: int = Field(..., ge=0)
     issue: Optional[int] = None
     pages: str = Field(..., pattern=PAGES_REGEX, description='Page range format: 23-34')
-
-    @model_validator(mode='before')
-    @classmethod
-    def ensure_authors(cls, values):
-        authors = values.get('authors', [])
-        if isinstance(authors, list):
-            values['authors'] = [Author(**author) if isinstance(author, dict) else author for author in authors]
-        return values
 
 
 class StatusEnum(str, Enum):
@@ -49,3 +41,4 @@ class ResponseSchema(BaseModel):
     message: str
     error_code: Optional[str] = None
     data: Optional[Any] = None
+    http_status: int
