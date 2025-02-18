@@ -15,21 +15,7 @@ setup(
     name='article_models_library',
     version='0.1.0',
     packages=find_packages(),
-    # install_requires=parse_requirements("requirements.txt"),
-    install_requires=[
-        'annotated-types',
-        'iniconfig',
-        'packaging',
-        'pluggy',
-        'pydantic',
-        'pydantic-settings',
-        'pydantic-core',
-        'pytest',
-        'python-dotenv',
-        'setuptools',
-        'typing_extensions',
-        'wheel'
-    ],
+    install_requires=parse_requirements("requirements.txt"),
     classifiers=[
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
