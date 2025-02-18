@@ -3,8 +3,8 @@ import os
 from io import BytesIO
 from pydantic import ValidationError
 
-from models.article_nosql_models import Author
-from models.schemas import ArticlePDFFile, ResponseSchema, StatusEnum, ArticleMetadata
+from article_models.article_nosql_models import Author
+from article_models.schemas import ArticlePDFFile, ResponseSchema, StatusEnum, ArticleMetadata
 
 
 def load_pdf(file_path):

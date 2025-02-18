@@ -51,7 +51,7 @@ pip install git+https://github.com/nataliagwardjan/article_models_librery
 Importing models:
 
 ```python
-from models.article_sql_models import ArticleMetadataDBSchema
+from article_models.article_sql_models import ArticleMetadataDBSchema
 ```
 Creating an instance of the model:
 ```python
