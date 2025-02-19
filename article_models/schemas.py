@@ -1,8 +1,9 @@
 from pydantic import BaseModel, Field, ConfigDict, model_validator
-from typing import Optional, Any
+from typing import Optional, Any, List, Set
 from io import BytesIO
 from enum import Enum
-from . import DOI_REGEX
+from . import DOI_REGEX, PAGES_REGEX
+from .article_nosql_models import Author
 
 
 class ArticlePDFFile(BaseModel):
@@ -18,6 +19,17 @@ class ArticlePDFFile(BaseModel):
 
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
+class ArticleMetadata(BaseModel):
+    id: str = Field(..., pattern=DOI_REGEX, description='Valid DOI format')
+    title: str = Field(..., min_length=1, description='Title of the article')
+    authors: List[Author] = Field(..., min_length=1, description='At least one author required')
+    keywords: Set[str]
+    journal: str = Field(..., min_length=1)
+    year: int = Field(..., ge=0)
+    volume: int = Field(..., ge=0)
+    issue: Optional[int] = None
+    pages: str = Field(..., pattern=PAGES_REGEX, description='Page range format: 23-34')
+
 
 class StatusEnum(str, Enum):
     SUCCESS = "SUCCESS"
@@ -29,3 +41,4 @@ class ResponseSchema(BaseModel):
     message: str
     error_code: Optional[str] = None
     data: Optional[Any] = None
+    http_status: int

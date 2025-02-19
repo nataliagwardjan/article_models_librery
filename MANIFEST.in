@@ -1,0 +1,4 @@
+include README.md
+include setup.py
+include models/*.py
+recursive-include article_models_library *

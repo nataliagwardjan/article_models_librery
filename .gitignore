@@ -11,3 +11,6 @@ __pycache__/
 
 # ADDITIONAL FILES
 model_description.txt
+
+# OTHERS
+article_models_library.egg-info/

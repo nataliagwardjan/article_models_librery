@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from article_models.article_sql_models import ArticleMetadata, ArticlePDF
+from article_models.article_sql_models import ArticleMetadataDBSchema, ArticlePDFDBSchema
 
 test_cases = [
     {
@@ -64,13 +64,13 @@ test_cases = [
 @pytest.mark.parametrize("test_data", test_cases)
 def test_article_metadata(test_data):
     if test_data['is_valid']:
-        article = ArticleMetadata(**test_data['article_metadata'])
+        article = ArticleMetadataDBSchema(**test_data['article_metadata'])
 
         for key, value in test_data['article_metadata'].items():
             assert getattr(article, key) == value
     else:
         with pytest.raises(test_data['expected_exception']):
-            ArticleMetadata(**test_data['article_metadata'])
+            ArticleMetadataDBSchema(**test_data['article_metadata'])
 
 
 pdf_test_cases = [
@@ -112,7 +112,7 @@ pdf_test_cases = [
 @pytest.mark.parametrize("test_data", pdf_test_cases)
 def test_article_pdf(test_data):
     if test_data['is_valid']:
-        pdf = ArticlePDF(**test_data['article_pdf'])
+        pdf = ArticlePDFDBSchema(**test_data['article_pdf'])
 
         for key, value in test_data['article_pdf'].items():
             assert getattr(pdf, key) == value
@@ -121,4 +121,4 @@ def test_article_pdf(test_data):
             assert getattr(pdf, key) == value
     else:
         with pytest.raises(test_data['expected_exception']):
-            ArticlePDF(**test_data['article_pdf'])
+            ArticlePDFDBSchema(**test_data['article_pdf'])

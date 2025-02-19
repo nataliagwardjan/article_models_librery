@@ -1,10 +1,12 @@
 import sys
 from setuptools import setup, find_packages
 
+
 # Load all requirements from requirements.txt
 def parse_requirements(filename):
     with open(filename, 'r') as file:
         return [line.strip() for line in file if line.strip() and not line.startswith('#')]
+
 
 # Python version
 python_version = sys.version.split(' ')[0]

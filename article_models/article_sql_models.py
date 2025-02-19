@@ -1,12 +1,11 @@
 from pydantic import BaseModel, Field, model_validator
 from typing import Optional
-from . import DOI_REGEX
+from . import DOI_REGEX, PAGES_REGEX
 
-PAGES_REGEX = r'^\d+-\d+$'
 PATH_REGEX = r'^[\w\-. /\\:]+$'
 
 
-class ArticleMetadata(BaseModel):
+class ArticleMetadataDBSchema(BaseModel):
     id: str = Field(..., pattern=DOI_REGEX, description='Valid DOI format')
     title: str = Field(..., min_length=1)
     authors: str = Field(..., min_length=1, description='Comma-separated list of authors')
@@ -18,7 +17,7 @@ class ArticleMetadata(BaseModel):
     keywords: str = Field(..., min_length=1, description='Comma-separated list of keywords')
 
 
-class ArticlePDF(BaseModel):
+class ArticlePDFDBSchema(BaseModel):
     id: str = Field(..., pattern=DOI_REGEX, description='Valid DOI format')
     file_path: Optional[str] = Field(None, pattern=PATH_REGEX, description='Path format')
     is_pdf_available: bool = Field(default=False)

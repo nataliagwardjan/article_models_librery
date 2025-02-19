@@ -25,7 +25,7 @@ pip install .
 If you want to install the library locally from a GitHub repository, you can use the following command:
 
 ```sh
-pip install git+https://github.com/yourusername/article_models_library.git
+pip install git+https://github.com/nataliagwardjan/article_models_librery
 ```
 
 ## Directory Structure
@@ -42,7 +42,6 @@ pip install git+https://github.com/yourusername/article_models_library.git
 ├── .gitignore               # Git ignore file
 ├── README.md                # This file
 ├── requirements.txt         # Requirements
-├── pyproject.toml           # Configuration file
 └── setup.py                 # Project setup
 ```
 
@@ -52,7 +51,7 @@ pip install git+https://github.com/yourusername/article_models_library.git
 Importing models:
 
 ```python
-from article_models.article_sql_models import ArticleMetadata
+from article_models.article_sql_models import ArticleMetadataDBSchema
 ```
 Creating an instance of the model:
 ```python
