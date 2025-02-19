@@ -1,6 +1,6 @@
 import pytest
 from pydantic import ValidationError
-from models.article_sql_models import ArticleMetadata, ArticlePDF
+from article_models.article_sql_models import ArticleMetadata, ArticlePDF
 
 test_cases = [
     {

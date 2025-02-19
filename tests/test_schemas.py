@@ -2,7 +2,7 @@ import pytest
 import os
 from io import BytesIO
 from pydantic import ValidationError
-from models.schemas import ArticlePDFFile, ResponseSchema, StatusEnum
+from article_models.schemas import ArticlePDFFile, ResponseSchema, StatusEnum
 
 
 def load_pdf(file_path):

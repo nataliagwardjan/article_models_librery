@@ -1,5 +1,5 @@
 import pytest
-from models.article_nosql_models import ArticleText, Author, Image, Table
+from article_models.article_nosql_models import ArticleText, Author, Image, Table
 
 test_cases = [
     {

@@ -50,8 +50,9 @@ pip install git+https://github.com/yourusername/article_models_library.git
 ## Usage
 
 Importing models:
+
 ```python
-from models.article_sql_models import ArticleMetadata
+from article_models.article_sql_models import ArticleMetadata
 ```
 Creating an instance of the model:
 ```python

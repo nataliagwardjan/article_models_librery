@@ -1,9 +1,18 @@
 from typing import Optional
 
+SERVER_ERRORS_CODES = {
+    'article_models_library': 'AML',
+    'database_management_service': 'DMS',
+    'article_search_service': 'ASS',
+    'article_download_service': 'ADS',
+    'article_pdf_management_service': 'APMS',
+    'article_summarise_service': 'ASumS'
+}
+
 ERROR_CODES = {
-    'AML-0': 'UNDEFINED_ERROR',
-    'AML-1': 'INVALID_FIELD',
-    'AML-2': 'MISSING_FIELD'
+    f'{SERVER_ERRORS_CODES['article_models_library']}-0': 'UNDEFINED_ERROR',
+    f'{SERVER_ERRORS_CODES['article_models_library']}-1': 'INVALID_FIELD',
+    f'{SERVER_ERRORS_CODES['article_models_library']}-2': 'MISSING_FIELD'
 }
 
 
