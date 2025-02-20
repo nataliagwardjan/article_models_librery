@@ -1,6 +1,7 @@
 from typing import Optional
 
-SERVER_ERRORS_CODES = {
+SERVICE_CODES = {
+    'article_analyser_api': 'AAA',
     'article_models_library': 'AML',
     'database_management_service': 'DMS',
     'article_search_service': 'ASS',
@@ -10,23 +11,31 @@ SERVER_ERRORS_CODES = {
 }
 
 ERROR_CODES = {
-    f'{SERVER_ERRORS_CODES['article_models_library']}-0': 'UNDEFINED_ERROR',
-    f'{SERVER_ERRORS_CODES['article_models_library']}-1': 'INVALID_FIELD',
-    f'{SERVER_ERRORS_CODES['article_models_library']}-2': 'MISSING_FIELD'
+    f'{SERVICE_CODES['article_analyser_api']}-0': 'UNDEFINED_ERROR',
+    f'{SERVICE_CODES['article_models_library']}-0': 'UNDEFINED_ERROR',
+    f'{SERVICE_CODES['article_models_library']}-1': 'PYDANTIC_VALIDATION_ERROR'
 }
 
 
-class CustomError(Exception):
-    def __init__(self, error_code: str, error_message: str, additional_info: Optional[str] = ''):
+class ArticleAnalyserApiBaseException(Exception):
+    def __init__(self, error_code: str, error_message: str, http_status_code: int = 400,
+                 additional_info: Optional[str] = ''):
         self.error_code = error_code
         self.error_message = error_message
+        self.http_status_code = http_status_code
         self.additional_info = additional_info
-        super().__init__(f'{error_code}: {error_message}\n{additional_info}')
+        super().__init__(
+            f'{self.error_code}: {self.error_message}\n{self.additional_info}. \nHttp status code {self.http_status_code}')
 
 
-class ModelValidationError(CustomError):
-    def __init__(self, error_code: str, additional_info: Optional[str] = ''):
+class ModelValidationException(ArticleAnalyserApiBaseException):
+    def __init__(self, error_code: str, http_status_code: int = 400, additional_info: Optional[str] = ''):
         if error_code not in ERROR_CODES:
-            raise CustomError('AML-0', ERROR_CODES['AML-0'], f'Unknown error_code {error_code}.')
+            raise ArticleAnalyserApiBaseException(error_code=f'{SERVICE_CODES['article_analyser_api']}-0',
+                                                  error_message=ERROR_CODES[
+                                                      f'{SERVICE_CODES['article_analyser_api']}-0'],
+                                                  http_status_code=500,
+                                                  additional_info=f'Unknown error_code {error_code}. Error code not in ERROR_CODES in article_models_library')
         error_message = ERROR_CODES[error_code]
-        super().__init__(error_code=error_code, error_message=error_message, additional_info=additional_info)
+        super().__init__(error_code=error_code, error_message=error_message, http_status_code=http_status_code,
+                         additional_info=additional_info)
